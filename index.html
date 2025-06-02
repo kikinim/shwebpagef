@@ -1,25 +1,49 @@
-# 📄 index.html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>Notion 대시보드</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notion 데이터 시각화</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <h1>학생 점수 대시보드</h1>
-  <ul id="scoreList"></ul>
+  <h1>📊 Notion 데이터 기반 그래프</h1>
+  <canvas id="notionChart" width="600" height="400"></canvas>
 
   <script>
-    fetch("data.json")
-      .then(res => res.json())
-      .then(data => {
-        const ul = document.getElementById("scoreList");
-        data.forEach(entry => {
-          const li = document.createElement("li");
-          li.textContent = `${entry.name}: ${entry.score}`;
-          ul.appendChild(li);
-        });
+    async function fetchData() {
+      const res = await fetch('public/data.json'); // GitHub Pages 경로 기준
+      const data = await res.json();
+
+      // 예시: "이름"과 "점수"를 가져와서 그래프 데이터 구성
+      const labels = data.map(entry => entry.name || "Unnamed");
+      const values = data.map(entry => entry.score || 0);
+
+      const ctx = document.getElementById('notionChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: '점수',
+            data: values,
+            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
       });
+    }
+
+    fetchData();
   </script>
 </body>
 </html>
