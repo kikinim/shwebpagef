@@ -1,0 +1,25 @@
+# 📄 index.html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Notion 대시보드</title>
+</head>
+<body>
+  <h1>학생 점수 대시보드</h1>
+  <ul id="scoreList"></ul>
+
+  <script>
+    fetch("data.json")
+      .then(res => res.json())
+      .then(data => {
+        const ul = document.getElementById("scoreList");
+        data.forEach(entry => {
+          const li = document.createElement("li");
+          li.textContent = `${entry.name}: ${entry.score}`;
+          ul.appendChild(li);
+        });
+      });
+  </script>
+</body>
+</html>
