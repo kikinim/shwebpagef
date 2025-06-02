@@ -3,8 +3,8 @@ import os
 import json
 from notion_client import Client
 
-notion = Client(auth=os.environ["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"])
-database_id = os.environ["206697d446ea8090a9dfd66d97a8c797"]
+notion = Client(auth=os.environ["NOTION_API_KEY"])
+database_id = os.environ["NOTION_DB_ID"]
 
 results = notion.databases.query(database_id=database_id)["results"]
 
