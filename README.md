@@ -22,3 +22,5 @@ git bracnh
 environment rule 주의! 제거 !
 
 sercret key !!Z
+
+json data에 이모지 들어가있으면 안 됨. 이모지 제거.!
