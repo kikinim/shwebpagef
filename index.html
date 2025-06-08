@@ -7,16 +7,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Product+Sans&family=Dancing+Script&family=Nanum+Brush+Script&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: #ffffff;
-      font-family: 'Product Sans', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 24px 12px;
-      color: #89475B;
-    }
+   body {
+  margin: 0;
+  background: #ffffff;
+  font-family: 'Product Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* ✅ 가운데 정렬 유지 */
+  padding: 80px 16px;    /* ✅ 구글처럼 여백 크게 */
+  color: #333; /* ✅ 기본 텍스트 컬러 */
+}
     .logo {
       display: flex;
       align-items: center;
@@ -43,16 +43,17 @@
       margin-top: 4px;
     }
     .search-box {
-      display: flex;
-      align-items: center;
-      background: #fff;
-      border-radius: 50px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      padding: 12px 20px;
-      width: 90%;
-      max-width: 500px;
-      margin-bottom: 16px;
-    }
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 50px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 12px 20px;
+  width: 100%;
+  max-width: 800px;  /* ✅ 딱 구글 크기 느낌 */
+  margin-bottom: 24px;
+}
+
     .search-box input {
       border: none;
       outline: none;
@@ -79,13 +80,15 @@
       color: #89475B;
       font-size: 1rem;
     }
+
     .shortcuts {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      max-width: 600px;
-    }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;          /* ✅ 화면 가득 채움 */
+  max-width: none;      /* ✅ 너비 제한 제거 */
+}
     .shortcut {
       display: flex;
       flex-direction: column;
@@ -94,14 +97,18 @@
       color: #333;
     }
     .shortcut-icon {
-      width: 60px;
-      height: 60px;
-      background-color: #f8dfe3;
+       width: 70px;
+  height: 70px;
+  font-size: 24px;
+    background-color: #f0f0f5;   /* ✅ 파스텔 회보라 */
+  color: #6B7280;              /* ✅ 부드러운 아이콘 글씨 */    
+  
+
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
+      
       box-shadow: 0 1px 4px rgba(0,0,0,0.1);
       font-weight: bold;
     }
