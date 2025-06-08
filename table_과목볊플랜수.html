@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>과목별 플랜 수</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h2>📘 과목별 플랜 수</h2>
+  <canvas id="subjectChart" width="600" height="400"></canvas>
+
+  <script>
+    async function fetchData() {
+      const res = await fetch('public/subject_plan_count.json');
+      const data = await res.json();
+
+      const labels = data.map(item => item["과목"]);
+      const counts = data.map(item => item["플랜수"]);
+
+      new Chart(document.getElementById("subjectChart"), {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: '플랜 수',
+            data: counts,
+            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              stepSize: 1,
+              ticks: {
+                precision: 0
+              }
+            }
+          }
+        }
+      });
+    }
+
+    fetchData();
+  </script>
+</body>
+</html>

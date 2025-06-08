@@ -3,52 +3,203 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Notion 데이터 시각화@@@@@@@@@@@@</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <title>설화스터디학원 포털</title>
+  <link href="https://fonts.googleapis.com/css2?family=Product+Sans&family=Dancing+Script&family=Nanum+Brush+Script&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #ffffff;
+      font-family: 'Product Sans', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 12px;
+      color: #89475B;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .logo-left {
+      font-family: 'Dancing Script', cursive;
+      font-size: 3.5rem;
+      font-weight: bold;
+    }
+    .logo-right {
+      display: flex;
+      flex-direction: column;
+    }
+    .logo-title {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+    .logo-subtitle {
+      font-family: 'Nanum Brush Script', cursive;
+      font-size: 1.1rem;
+      color: #555;
+      margin-top: 4px;
+    }
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-radius: 50px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 12px 20px;
+      width: 90%;
+      max-width: 500px;
+      margin-bottom: 16px;
+    }
+    .search-box input {
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      flex-grow: 1;
+      padding: 8px;
+    }
+    #searchResult {
+      width: 100%;
+      max-width: 500px;
+      font-size: 0.9rem;
+      color: #333;
+      margin-bottom: 32px;
+    }
+    .result {
+      padding: 10px;
+      background: #fff0f5;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    h3 {
+      margin-top: 1.5rem;
+      color: #89475B;
+      font-size: 1rem;
+    }
+    .shortcuts {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      max-width: 600px;
+    }
+    .shortcut {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #333;
+    }
+    .shortcut-icon {
+      width: 60px;
+      height: 60px;
+      background-color: #f8dfe3;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      font-weight: bold;
+    }
+    .shortcut-label {
+      margin-top: 6px;
+      font-size: 0.8rem;
+      color: #666;
+      max-width: 80px;
+      text-align: center;
+      word-break: break-word;
+    }
+  </style>
 </head>
 <body>
-  <h1>📊 Notion 데이터 기반 그래프@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</h1>
-  <canvas id="notionChart" width="600" height="400"></canvas>
+  <!-- 로고 -->
+  <div class="logo">
+    <div class="logo-left">SH</div>
+    <div class="logo-right">
+      <div class="logo-title">설화스터디 학원</div>
+      <div class="logo-subtitle">심장이 터질 때까지</div>
+    </div>
+  </div>
 
-  <!-- ✅ 추가된 링크 -->
-  <p><a href="table.html">📄 테이블 보기@@@@@@@@@@@@@@@@@@@@@@@@@@@@</a></p>
+  <!-- 검색창 -->
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="예: 수학, 2025-06-01, 등급 1 등 검색" />
+  </div>
+  <div id="searchResult"></div>
 
-  
+  <!-- 바로가기 -->
+  <div class="shortcuts">
+    <a href="table1.html" class="shortcut">
+      <div class="shortcut-icon">1</div>
+      <div class="shortcut-label">table1</div>
+    </a>
+    <a href="table2.html" class="shortcut">
+      <div class="shortcut-icon">2</div>
+      <div class="shortcut-label">table2</div>
+    </a>
+    <a href="table3.html" class="shortcut">
+      <div class="shortcut-icon">3</div>
+      <div class="shortcut-label">table3</div>
+    </a>
+    <a href="table4.html" class="shortcut">
+      <div class="shortcut-icon">4</div>
+      <div class="shortcut-label">table4</div>
+    </a>
+  </div>
 
+  <!-- 검색 기능 JS -->
   <script>
-    async function fetchData() {
-      const res = await fetch('public/data.json'); // GitHub Pages 경로 기준
-      const data = await res.json();
+    const searchInput = document.getElementById("searchInput");
+    const resultBox = document.getElementById("searchResult");
 
-      // 예시: "이름"과 "점수"를 가져와서 그래프 데이터 구성
-      const labels = data.map(entry => entry.name || "Unnamed");
-      const values = data.map(entry => entry.score || 0);
+    const fileNames = [
+      { name: "data1.json", label: "📘 모의고사" },
+      { name: "data2.json", label: "📗 순공시간" },
+      { name: "data3.json", label: "📙 수행평가" },
+      { name: "data4.json", label: "📕 플랜수" }
+    ];
 
-      const ctx = document.getElementById('notionChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: '점수',
-            data: values,
-            backgroundColor: 'rgba(75, 192, 192, 0.5)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-          }]
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
+    const allData = {};
+
+    Promise.all(
+      fileNames.map(f => fetch(`public/${f.name}`).then(res => res.json()))
+    ).then(jsons => {
+      fileNames.forEach((f, i) => {
+        allData[f.label] = jsons[i];
       });
-    }
+    });
 
-    fetchData();
+    searchInput.addEventListener("input", () => {
+  const keyword = searchInput.value.trim();
+  if (!keyword) {
+    resultBox.innerHTML = "";
+    return;
+  }
+
+  let html = "";
+
+  for (const [label, data] of Object.entries(allData)) {
+    const matches = data.filter(item =>
+      Object.values(item).some(v => String(v).includes(keyword))
+    );
+
+    if (matches.length > 0) {
+      const top5 = matches.slice(-5).reverse(); // 최신 5개만 (역순 표시)
+      html += `<h3>${label} (최근 5개)</h3>`;
+      html += top5.map(d =>
+        `<div class="result">${Object.entries(d).map(([k, v]) =>
+          `<strong>${k}</strong>: ${v}`).join("<br>")}</div>`
+      ).join("");
+    }
+  }
+
+  resultBox.innerHTML = html || "<div>🔍 검색 결과 없음.</div>";
+});
+
   </script>
 </body>
 </html>
